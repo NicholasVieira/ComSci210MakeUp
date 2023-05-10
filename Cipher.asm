@@ -1,8 +1,8 @@
-#Nikki Gardiner
+#Nicholas Vieira
 
 #To make a cipher
 #Take in words
-#Adjust it by a few letters
+#Adjust a few letters
 #Output
 
 #Gives user a prompt, to cipher something, decipher something, or cancel the program.
