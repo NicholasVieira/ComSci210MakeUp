@@ -1,0 +1,78 @@
+#Nicholas Vieira
+
+#Lab 4 - Euclid's algorithm
+
+.data
+
+prompt: 	.asciiz "Please enter your message: "  # Ask the user to enter a string
+
+message:  	.space 128			# allocate 128 byte array to hold 256 characters
+
+.text
+
+main:
+	jal Initialize
+	jal InputText
+	jal DisplayOutput
+	jal Exit
+	
+Initialize:
+	li $a0, 0
+	li $a1, 0
+	li $s0, 0
+	li $v0, 0
+	li $t3, 0
+	jr $ra
+	
+##########################  Functions ##########################################
+
+########################## Input Function ######################
+
+InputText:			# this is a 'called' function to get the input string
+		
+	# Prompt the user to enter a message
+
+    	li      $v0, 4     	# load the value 4 into register $v0
+    				# syscall(4) is print a string
+   	la      $a0, prompt    	# 
+       	syscall             	#
+    
+    	li      $v0, 8     	# Load the value 8 into register $v0
+                       		# syscall 8 is Read a String               
+    	la      $a0, message 	#
+    	li      $a1, 256        # 
+    	syscall             	# => read a string with max. 256 chars
+    
+	jr $ra			# jump return to the calling function
+
+######################### Print Function #######################################
+
+DisplayOutput:			# this is a 'called' function to print the string
+	
+	la $a0, message 	# load the starting address of the message string
+	li $v0, 4		# load the integer 4 into register $v0
+	syscall			# syscall(4) will print the string
+	jr $ra
+
+####################### Exit Function ##########################################
+
+Exit: 				# this is a 'called' function to exit the program
+	li $v0, 10		# Exit
+	syscall	
+	
+.globl gcd
+gcd:
+	beqz $a1, done
+	move $t0, $10
+	move $t1, $a1
+	
+loop:
+	div $t0, $t1
+	mfhi $t2
+	beqz $t2, done
+	move $t0, $t1
+	move $t1, $t2
+	j loop
+done:
+	move $v0, $t1
+	jr $ra
